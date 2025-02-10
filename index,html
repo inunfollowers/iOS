@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unfollowers Instagram Robot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Moo+Lah+Lah&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a60, #6a0572);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            overflow-x: hidden;
+            position: relative;
+        }
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
+            opacity: 1;
+            transition: opacity 1s ease;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        .welcome-text {
+            font-size: 2.8rem;
+            font-weight: bold;
+            font-family: 'Gochi Hand', cursive;
+            max-width: 90%;
+            margin-bottom: 10px;
+            opacity: 1;
+            transition: opacity 1s ease;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        .sub-text {
+            font-size: 1.4rem;
+            font-family: 'Gochi Hand', cursive;
+            margin-bottom: 20px;
+            max-width: 85%;
+            opacity: 1;
+            transition: opacity 1s ease;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        .page-description {
+            font-size: 1rem;
+            font-family: 'Kalam', serif;
+            font-weight: 400;
+            max-width: 600px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            word-wrap: break-word;
+            opacity: 1;
+            transition: opacity 1s ease;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        .action-button {
+            background-color: #ff8000;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, opacity 1s ease;
+            font-family: 'Moo Lah Lah', serif;
+            font-weight: 400;
+            margin-bottom: 30px;
+            opacity: 1;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        .action-button:hover {
+            background-color: #e67300;
+        }
+        .upload-instruction-text {
+            font-size: 1.4rem;
+            font-family: 'Kalam', serif;
+            margin-bottom: 20px;
+            max-width: 85%;
+            line-height: 1.5;
+            opacity: 0;
+            transition: opacity 1s ease;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        .file-select-button {
+            background-color: #ff8000;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, opacity 1s ease;
+            font-family: 'Moo Lah Lah', serif;
+            font-weight: 400;
+            opacity: 0;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        .file-select-button:hover {
+            background-color: #e67300;
+        }
+        .file-input {
+            display: none;
+        }
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            opacity: 0.9;
+            font-size: 1em;
+            user-select: none;
+            z-index: 1000;
+            animation: fall linear infinite both;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10px) translateX(0); }
+            50% { transform: translateY(50vh) translateX(calc(5vw * var(--x))); }
+            100% { transform: translateY(100vh) translateX(calc(10vw * var(--x))); }
+        }
+        .reset-button {
+            font-family: "Anonymous Pro", serif;
+            font-weight: 400;
+            font-style: normal;
+            color: white;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 10px;
+            text-decoration: underline;
+        }
+        @media screen and (max-width: 768px) {
+            .welcome-text {
+                font-size: 2.2rem;
+            }
+            .sub-text {
+                font-size: 1.2rem;
+            }
+            .page-description {
+                font-size: 0.9rem;
+            }
+            .action-button, .file-select-button {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+            .upload-instruction-text {
+                font-size: 1.2rem;
+            }
+            .snowflake {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main id="page1">
+        <img src="https://raw.githubusercontent.com/BasirParvizi/inunfollowers/K/IN.jpg" alt="Profile Picture" class="profile-image">
+        <h1 class="welcome-text">Welcome</h1>
+        <p class="sub-text">to Unfollowers Instagram Robot<br>Support Page</p>
+        <div class="page-description">
+            We have created this page for iOS users.<br>
+            So that you can enjoy our services just like other users.<br>
+            Due to Apple's restrictions, we have to use this method.<br>
+            Click the Continue button to proceed.
+        </div>
+        <button class="action-button" id="continueBtn">Continue</button>
+        <button class="reset-button" id="resetBtn">Reset</button>
+    </main>
+    <section id="page2" style="display: none;">
+        <h2 class="welcome-text">Upload File</h2>
+        <p class="upload-instruction-text">Please upload the unfollowers.html file<br>that the Telegram bot sent you.</p>
+        <label for="fileInput" class="file-select-button" id="fileButtonLabel">Select File</label>
+        <input type="file" class="file-input" id="fileInput" accept=".html" />
+    </section>
+    <script>
+        const dbName = 'unfollowersDB';
+        const storeName = 'files';
+    
+        // اتصال به IndexedDB
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(dbName, 1);
+    
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve(request.result);
+                request.onupgradeneeded = (event) => {
+                    event.target.result.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+                };
+            });
+        }
+    
+        // ذخیره فایل در IndexedDB
+        async function saveFileToDB(content) {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readwrite');
+                const store = transaction.objectStore(storeName);
+                const request = store.put({ content });
+    
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    console.log('File saved to IndexedDB successfully.');
+                    resolve();
+                };
+            });
+        }
+    
+        // بارگذاری فایل از IndexedDB
+        async function loadFileFromDB() {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readonly');
+                const store = transaction.objectStore(storeName);
+                const request = store.getAll();
+    
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve(request.result[0]?.content || null);
+            });
+        }
+    
+        // پاک کردن فایل‌های ذخیره شده در IndexedDB
+        async function resetDB() {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([storeName], 'readwrite');
+                const store = transaction.objectStore(storeName);
+                const request = store.clear();
+    
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    console.log('IndexedDB cleared successfully.');
+                    resolve();
+                };
+            });
+        }
+    
+        document.addEventListener('DOMContentLoaded', async function () {
+            createSnowflakes(50);
+    
+            const continueBtn = document.getElementById('continueBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
+    
+            // بررسی وجود فایل قبلی در IndexedDB
+            const savedContent = await loadFileFromDB();
+            if (savedContent) {
+                // اگر فایلی ذخیره شده باشد، مستقیماً به صفحه نمایش فایل منتقل می‌شویم
+                showFile(savedContent);
+                page1.style.display = 'none'; // مخفی کردن صفحه اول
+                return;
+            }
+    
+            // رویداد کلیک بر روی دکمه Continue
+            continueBtn.addEventListener('click', function () {
+                const elementsToFade = page1.querySelectorAll('.welcome-text, .sub-text, .page-description, .action-button');
+                elementsToFade.forEach(el => el.style.opacity = 0);
+    
+                setTimeout(() => {
+                    page1.style.display = 'none';
+                    page2.style.display = 'block';
+                    setTimeout(() => {
+                        page2.querySelector('.upload-instruction-text').style.opacity = 1;
+                        fileButtonLabel.style.opacity = 1;
+                    }, 100);
+                }, 1000);
+            });
+    
+            // رویداد کلیک بر روی دکمه Reset
+            resetBtn.addEventListener('click', async function () {
+                await resetDB();
+                alert('All saved files have been reset.');
+                window.location.reload();
+            });
+    
+            // رویداد انتخاب فایل
+            fileInput.addEventListener('change', async function (event) {
+                if (event.target.files.length > 0) {
+                    const file = event.target.files[0];
+                    const reader = new FileReader();
+    
+                    reader.onload = async function (e) {
+                        const fileContent = e.target.result;
+    
+                        // ذخیره فایل در IndexedDB
+                        await saveFileToDB(fileContent);
+    
+                        // نمایش فایل
+                        showFile(fileContent);
+                    };
+    
+                    reader.readAsText(file);
+                }
+            });
+    
+            // تابع نمایش فایل
+            function showFile(fileContent) {
+                document.open();
+                document.write(fileContent);
+                document.close();
+    
+                // اضافه کردن دکمه Back
+                const backButton = document.createElement('button');
+                backButton.textContent = 'Back';
+                backButton.style.position = 'fixed';
+                backButton.style.top = '10px';
+                backButton.style.right = '10px';
+                backButton.style.backgroundColor = '#ff8000';
+                backButton.style.color = 'white';
+                backButton.style.padding = '10px 20px';
+                backButton.style.border = 'none';
+                backButton.style.borderRadius = '5px';
+                backButton.style.cursor = 'pointer';
+                backButton.style.zIndex = '1000';
+    
+                backButton.onclick = function () {
+                    window.location.reload();
+                };
+    
+                document.body.appendChild(backButton);
+            }
+    
+            // ایجاد برف‌ها
+            function createSnowflakes(count) {
+                const container = document.body;
+                for (let i = 0; i < count; i++) {
+                    const snowflake = document.createElement('div');
+                    snowflake.classList.add('snowflake');
+                    snowflake.style.left = `${Math.random() * 100}vw`;
+                    snowflake.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                    snowflake.style.fontSize = `${Math.random() * 3 + 2}px`;
+                    snowflake.style.setProperty('--x', Math.random() * 2 - 1);
+                    snowflake.innerHTML = '&#8226;';
+                    container.appendChild(snowflake);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
