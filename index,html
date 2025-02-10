@@ -270,29 +270,27 @@
             const resetBtn = document.getElementById('resetBtn');
             const page1 = document.getElementById('page1');
             const page2 = document.getElementById('page2');
-    
-            // بررسی وجود فایل قبلی در IndexedDB
-            const savedContent = await loadFileFromDB();
-            if (savedContent) {
-                // اگر فایلی ذخیره شده باشد، مستقیماً به صفحه نمایش فایل منتقل می‌شویم
-                showFile(savedContent);
-                page1.style.display = 'none'; // مخفی کردن صفحه اول
-                return;
-            }
+            const fileInput = document.getElementById('fileInput');
+            const fileButtonLabel = document.getElementById('fileButtonLabel');
     
             // رویداد کلیک بر روی دکمه Continue
-            continueBtn.addEventListener('click', function () {
-                const elementsToFade = page1.querySelectorAll('.welcome-text, .sub-text, .page-description, .action-button');
-                elementsToFade.forEach(el => el.style.opacity = 0);
+            continueBtn.addEventListener('click', async function () {
+                const savedContent = await loadFileFromDB();
+                if (savedContent) {
+                    showFile(savedContent);
+                } else {
+                    const elementsToFade = page1.querySelectorAll('.welcome-text, .sub-text, .page-description, .action-button');
+                    elementsToFade.forEach(el => el.style.opacity = 0);
     
-                setTimeout(() => {
-                    page1.style.display = 'none';
-                    page2.style.display = 'block';
                     setTimeout(() => {
-                        page2.querySelector('.upload-instruction-text').style.opacity = 1;
-                        fileButtonLabel.style.opacity = 1;
-                    }, 100);
-                }, 1000);
+                        page1.style.display = 'none';
+                        page2.style.display = 'block';
+                        setTimeout(() => {
+                            page2.querySelector('.upload-instruction-text').style.opacity = 1;
+                            fileButtonLabel.style.opacity = 1;
+                        }, 100);
+                    }, 1000);
+                }
             });
     
             // رویداد کلیک بر روی دکمه Reset
