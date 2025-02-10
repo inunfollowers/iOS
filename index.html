@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1A1A60">
     <title>Unfollowers Instagram Robot</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -159,6 +158,56 @@
             margin-top: 10px;
             text-decoration: underline;
         }
+        /* استایل‌های لودینگ */
+        .dots-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1001; /* بالاتر از بک‌گراند تاریک */
+        }
+        .dot {
+            width: 15px;
+            height: 15px;
+            background-color: #ff8000; /* رنگ نارنجی */
+            border-radius: 50%;
+            margin: 0 5px;
+            animation: bounce 1s infinite ease-in-out;
+        }
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        .dot:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+        .dot:nth-child(5) {
+            animation-delay: 0.8s;
+        }
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        /* تاریک کردن بک‌گراند */
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* تاریک کردن بک‌گراند */
+            z-index: 1000; /* زیر لودینگ */
+            display: none;
+        }
         @media screen and (max-width: 768px) {
             .welcome-text {
                 font-size: 2.2rem;
@@ -201,6 +250,15 @@
         <p class="upload-instruction-text">Please upload the unfollowers.html file<br>that the Telegram bot sent you.</p>
         <label for="fileInput" class="file-select-button" id="fileButtonLabel">Select File</label>
         <input type="file" class="file-input" id="fileInput" accept=".html" />
+    </section>
+    <!-- لودینگ و تاریک کردن بک‌گراند -->
+    <div id="loadingOverlay"></div>
+    <section id="loadingSection" class="dots-container" style="display: none;">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
     </section>
     <script>
         const dbName = 'unfollowersDB';
@@ -273,6 +331,8 @@
             const page2 = document.getElementById('page2');
             const fileInput = document.getElementById('fileInput');
             const fileButtonLabel = document.getElementById('fileButtonLabel');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const loadingSection = document.getElementById('loadingSection');
     
             // رویداد کلیک بر روی دکمه Continue
             continueBtn.addEventListener('click', async function () {
@@ -304,17 +364,33 @@
             // رویداد انتخاب فایل
             fileInput.addEventListener('change', async function (event) {
                 if (event.target.files.length > 0) {
+                    // نمایش لودینگ و تاریک کردن بک‌گراند
+                    loadingOverlay.style.display = 'block';
+                    loadingSection.style.display = 'flex';
+
                     const file = event.target.files[0];
                     const reader = new FileReader();
     
                     reader.onload = async function (e) {
                         const fileContent = e.target.result;
     
-                        // ذخیره فایل در IndexedDB
+                        // شبیه‌سازی یک تأخیر برای تست لودینگ
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+    
                         await saveFileToDB(fileContent);
+    
+                        // مخفی کردن لودینگ و تاریک کردن بک‌گراند
+                        loadingOverlay.style.display = 'none';
+                        loadingSection.style.display = 'none';
     
                         // نمایش فایل
                         showFile(fileContent);
+                    };
+    
+                    reader.onerror = function () {
+                        alert('Error reading file. Please try again.');
+                        loadingOverlay.style.display = 'none';
+                        loadingSection.style.display = 'none';
                     };
     
                     reader.readAsText(file);
@@ -331,8 +407,8 @@
                 const backButton = document.createElement('button');
                 backButton.textContent = 'Back';
                 backButton.style.position = 'fixed';
-                backButton.style.top = '10px';
-                backButton.style.right = '10px';
+                backButton.style.bottom = '20px';
+                backButton.style.right = '20px';
                 backButton.style.backgroundColor = '#ff8000';
                 backButton.style.color = 'white';
                 backButton.style.padding = '10px 20px';
@@ -340,11 +416,10 @@
                 backButton.style.borderRadius = '5px';
                 backButton.style.cursor = 'pointer';
                 backButton.style.zIndex = '1000';
-    
+                backButton.style.transition = 'opacity 0.3s ease';
                 backButton.onclick = function () {
                     window.location.reload();
                 };
-    
                 document.body.appendChild(backButton);
             }
     
