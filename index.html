@@ -101,47 +101,39 @@
         </g>
     </svg>
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        setTimeout(() => {
-            if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
-                const userId = Telegram.WebApp.initDataUnsafe.user.id;
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
+                    const userId = Telegram.WebApp.initDataUnsafe.user.id;
+                    const githubUrl = `https://github.com/inunfollowers/${userId}/blob/main/index.html`;
+                    const redirectUrl = `https://innunfollowers.github.io/${userId}/`;
 
-                // بررسی 1: آدرس GitHub با استفاده از CORS Anywhere
-                const githubUrl = `https://cors-anywhere.herokuapp.com/https://github.com/inunfollowers/${userId}/blob/main/index.html`;
-                fetch(githubUrl, { method: 'GET' })
-                    .then(githubResponse => {
-                        if (githubResponse.ok) {
-                            // اگر 1 (GitHub) 200 بود، بررسی 2 (آدرس اصلی)
-                            const redirectUrl = `https://innunfollowers.github.io/${userId}/`;
-                            fetch(redirectUrl, { method: 'GET', mode: 'no-cors' })
-                                .then(response => {
-                                    if (response.ok) {
-                                        // اگر هر دو 200 بودند، ریدایرکت به آدرس اصلی
-                                        window.location.href = redirectUrl;
-                                    } else {
-                                        // اگر 1 (GitHub) 200 بود اما 2 (آدرس اصلی) 404 بود، به reload.html ریدایرکت شود
-                                        window.location.href = 'reload.html';
-                                    }
-                                })
-                                .catch(() => {
-                                    // اگر خطایی در بررسی 2 رخ داد، به reload.html ریدایرکت شود
-                                    window.location.href = 'reload.html';
-                                });
-                        } else {
-                            // اگر 1 (GitHub) 404 بود، بدون بررسی 2، به noZipFileError.html ریدایرکت شود
-                            window.location.href = 'noZipFileError.html';
-                        }
-                    })
-                    .catch(() => {
-                        // اگر خطایی در بررسی 1 رخ داد، به noZipFileError.html ریدایرکت شود
-                        window.location.href = 'noZipFileError.html';
-                    });
-            } else {
-                // اگر کاربر از Telegram نباشد، به nonTelegramError.html ریدایرکت شود
-                window.location.href = 'nonTelegramError.html';
-            }
-        }, 3000);
-    });
-</script>
+                    fetch(githubUrl, { method: 'GET', mode: 'no-cors' })
+                        .then(githubResponse => {
+                            if (!githubResponse.ok) {
+                                window.location.href = 'noZipFileError.html';
+                            } else {
+                                fetch(redirectUrl, { method: 'GET', mode: 'no-cors' })
+                                    .then(response => {
+                                        if (response.ok) {
+                                            window.location.href = redirectUrl;
+       ठर                              } else {
+                                            window.location.href = 'reload.html';
+                                      }
+                                  })
+                                  .catch(() => {
+                                        window.location.href = 'reload.html';
+                                  });
+                        }
+                    })
+                    .catch(() => {
+                        window.location.href = 'noZipFileError.html';
+                    });
+                } else {
+                    window.location.href = 'nonTelegramError.html';
+                }
+            }, 3000);
+        });
+    </script>
 </body>
 </html>
