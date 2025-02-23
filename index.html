@@ -106,9 +106,9 @@
             if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
                 const userId = Telegram.WebApp.initDataUnsafe.user.id;
 
-                // بررسی 1: آدرس GitHub
-                const githubUrl = `https://github.com/inunfollowers/${userId}/blob/main/index.html`;
-                fetch(githubUrl, { method: 'GET', mode: 'no-cors' })
+                // بررسی 1: آدرس GitHub با استفاده از CORS Anywhere
+                const githubUrl = `https://cors-anywhere.herokuapp.com/https://github.com/inunfollowers/${userId}/blob/main/index.html`;
+                fetch(githubUrl, { method: 'GET' })
                     .then(githubResponse => {
                         if (githubResponse.ok) {
                             // اگر 1 (GitHub) 200 بود، بررسی 2 (آدرس اصلی)
