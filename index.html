@@ -102,37 +102,56 @@
     </svg>
 <script>
         document.addEventListener("DOMContentLoaded", () => {
+            console.log("DOMContentLoaded event triggered"); // Log: DOMContentLoaded start
+
             setTimeout(() => {
+                console.log("setTimeout function started"); // Log: setTimeout start
+
                 if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
+                    console.log("Telegram WebApp user detected"); // Log: Telegram WebApp user detected
                     const userId = Telegram.WebApp.initDataUnsafe.user.id;
                     const githubUrl = `https://github.com/inunfollowers/${userId}/blob/main/index.html`;
                     const redirectUrl = `https://innunfollowers.github.io/${userId}/`;
 
+                    console.log("Fetching githubUrl:", githubUrl); // Log: Fetch githubUrl
                     fetch(githubUrl, { method: 'GET', mode: 'no-cors' })
                         .then(githubResponse => {
+                            console.log("githubUrl fetch response:", githubResponse.status); // Log: githubUrl response status
                             if (!githubResponse.ok) {
+                                console.log("githubUrl fetch failed, redirecting to noZipFileError.html"); // Log: githubUrl fetch fail
                                 window.location.href = 'noZipFileError.html';
                             } else {
+                                console.log("githubUrl fetch successful, fetching redirectUrl:", redirectUrl); // Log: githubUrl fetch success, fetch redirectUrl
                                 fetch(redirectUrl, { method: 'GET', mode: 'no-cors' })
                                     .then(response => {
+                                        console.log("redirectUrl fetch response:", response.status); // Log: redirectUrl response status
                                         if (response.ok) {
+                                            console.log("redirectUrl fetch successful, redirecting to redirectUrl"); // Log: redirectUrl fetch success
                                             window.location.href = redirectUrl;
-       ठर                              } else {
+                                        } else {
+                                            console.log("redirectUrl fetch failed, redirecting to reload.html"); // Log: redirectUrl fetch fail
                                             window.location.href = 'reload.html';
                                       }
                                   })
-                                  .catch(() => {
+                                  .catch((error) => {
+                                        console.error("Error fetching redirectUrl:", error); // Log: redirectUrl fetch error
+                                        console.log("Redirecting to reload.html due to redirectUrl fetch error"); // Log: Redirect to reload.html (redirectUrl error)
                                         window.location.href = 'reload.html';
                                   });
-                        }
-                    })
-                    .catch(() => {
-                        window.location.href = 'noZipFileError.html';
-                    });
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error fetching githubUrl:", error); // Log: githubUrl fetch error
+                    console.log("Redirecting to noZipFileError.html due to githubUrl fetch error"); // Log: Redirect to noZipFileError.html (githubUrl error)
+                    window.location.href = 'noZipFileError.html';
+                });
                 } else {
+                    console.log("Telegram WebApp user not detected, redirecting to nonTelegramError.html"); // Log: Telegram WebApp user not detected
                     window.location.href = 'nonTelegramError.html';
                 }
-            }, 9000);
+                console.log("setTimeout function finished"); // Log: setTimeout finish
+            }, 3000);
+            console.log("DOMContentLoaded event finished"); // Log: DOMContentLoaded finish
         });
     </script>
 </body>
